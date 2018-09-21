@@ -1,0 +1,78 @@
+<div class="margin_altura container-fluid">
+    <div class="row justify-content-md-center">
+      <div class="col-md-auto">
+        <h5 class="center">{{titulo}}</h5>
+      </div>
+    </div>
+  <div class="painel">
+      <ngb-alert style="text-align: center;" *ngIf="!avisoMensagem" (close)="avisoMensagem=true">{{mensagem}}</ngb-alert>
+          <div class="form-row">
+              <div class="col-md-12 mb-3">
+                  <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                      </div>
+                      <input type="text" [(ngModel)]="procurarPorNome" class="form-control" placeholder="Digite o nome genérico do medicamento..." aria-label="nome" aria-describedby="basic-addon1">
+                      <div class="input-group-append">
+                          <a routerLink="/cadastro_medicamento" class="btn btn-primary active" role="button" aria-pressed="true">
+                            <i class="fas fa-plus-circle"></i>Adicionar medicamento
+                          </a>
+                      </div>
+                    </div>
+              </div>
+         </div>
+      <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Nome genérico</th>
+                <th scope="col">Nome Comercial</th>
+                <th scope="col">Fabricante</th>
+                <th scope="col">Opções</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let m of medicamentos | filter : 'nomeGenerico' : procurarPorNome | paginate: { itemsPerPage: 7, currentPage: p,  totalItems: this.numberOfElements }; let i = index;">
+                <td>{{m.nomeGenerico}}</td>
+                <td>{{m.nomeComercial}}</td>
+                <td *ngIf="m.fabricante == 0">Johnson & Johnson</td>
+                <td *ngIf="m.fabricante == 1">EMS Corp</td>
+                <td *ngIf="m.fabricante == 2">Hypermarcas</td>
+                <td *ngIf="m.fabricante == 3">Sanofi</td>
+                <td *ngIf="m.fabricante == 4">Novartis</td>
+                <td *ngIf="m.fabricante == 5">Aché</td>
+                <td *ngIf="m.fabricante == 6">Eurofarma</td>
+                <td *ngIf="m.fabricante == 7">Takeda</td>
+                <td *ngIf="m.fabricante == 8">Bayer</td>
+                <td *ngIf="m.fabricante == 9">Pfizer</td>
+                <td *ngIf="m.fabricante == 10">GSK</td>
+                <td *ngIf="m.fabricante == 11">Avert</td>
+                <td *ngIf="m.fabricante == 12">Bionatus</td>
+                <td *ngIf="m.fabricante == 13">Cimed</td>
+                <td *ngIf="m.fabricante == 14">Colgate-Palmolive</td>
+                <td *ngIf="m.fabricante == 15">Farmax</td>
+                <td *ngIf="m.fabricante == 16">Medley</td>
+                <td>
+                  <a style="cursor: pointer;" (click)="deleteMedicamento(m.idMedicamento, i)" class="padding_menu"><i class="fas fa-trash-alt" title="Remover"></i></a>
+                  <a style="cursor: pointer;" (click)="editar(m.idMedicamento);" class="padding_menu" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+          <table class="table table-borderles">
+                <tbody>
+                      <tr>
+                          <td colspan="4">
+                                    <pagination-controls (pageChange)="p = $event" directionLinks="true"
+                                    autoHide="true" responsive="true"previousLabel="Anterior"
+                                    nextLabel="Próximo" screenReaderPaginationLabel="Pagination"
+                                    screenReaderPageLabel="page"></pagination-controls>
+                          </td>
+                          <td colspan="4" style="text-align: right;">Total de medicamentos: {{this.qtdMedicamento}}</td> 
+                         </tr>
+                </tbody>
+            </table>
+        </div>
+</div>
+

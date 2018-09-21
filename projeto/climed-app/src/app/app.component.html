@@ -1,0 +1,65 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+<div class="row align-items-center justify-content-center">
+    <div class="col">
+      <ng4-loading-spinner [threshold]="0" [template]="template"></ng4-loading-spinner>
+    </div>
+</div>
+<div class="esconde" id="principal">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top" id="banner">
+	<div class="container">
+  <a class="navbar-brand" routerLink="/home"><span>Cli</span>Medic</a>
+  <h1>{{isLogin}}</h1>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="collapsibleNavbar" style="font-size: 15px;">
+    <ul class="navbar-nav ml-auto">
+       <li class="nav-item" *ngIf="isSecretaria">
+          <a class="nav-link" routerLink="/profissionais">Profissional</a>
+      </li>
+      <li class="nav-item" *ngIf="isSecretaria">
+        <a class="nav-link" routerLink="/consultas">Consulta</a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" routerLink="/medicamentos">Medicamento</a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" routerLink="/estatisticas">Atendimentos</a>
+      </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+          Pacientes
+      </a>
+      <div class="dropdown-menu">
+        <a *ngIf="isSecretaria" class="dropdown-item" routerLink="/pacientes"> <i class="fas fa-clipboard-list"></i><span class="padding_menu">Novo</span></a>
+        <a *ngIf="isMedico" class="dropdown-item" routerLink="/consultasmedicas"> <i class="fas fa-user-md"></i><span class="padding_menu">Consultar</span></a>
+      </div>
+    </li>
+    <li class="nav-item dropdown" *ngIf="isSecretaria">
+      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+          Exames
+      </a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" routerLink="/pedidos"><i class="fas fa-file-medical-alt"></i> <span class="padding_menu">Pedidos</span></a>
+        <a class="dropdown-item" routerLink="/resultados"><i class="fas fa-notes-medical"></i> <span class="padding_menu">Resultados</span></a>
+      </div>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+            Olá, {{nome}}
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" routerLink="/alterarsenha"><i class="fas fa-unlock-alt"></i> <span class="padding_menu">Alterar senha</span></a>
+          <div class="dropdown-divider"></div>
+          <a style="cursor: pointer;" class="dropdown-item" (click)="sair()"><i class="fas fa-sign-out-alt"></i> <span class="padding_menu">Sair</span></a>
+        </div>
+      </li>
+    </ul>
+  </div>
+	</div>
+</nav>
+</div>
+<router-outlet>
+</router-outlet>

@@ -1,0 +1,74 @@
+<div class="margin_altura container-fluid">
+  <div class="row justify-content-md-center">
+    <div class="col-md-auto">
+      <h5 class="center">{{titulo}}</h5>
+    </div>
+  </div>
+<div class="painel">
+    <ngb-alert style="text-align: center;" *ngIf="!avisoMensagem" (close)="avisoMensagem=true">{{mensagem}}</ngb-alert>
+        <div class="form-row">
+            <div class="col-md-12 mb-3">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                    </div>
+                    <input type="text" [(ngModel)]="procurarPorNome" class="form-control" placeholder="Digite o nome do paciente..." aria-label="nome" aria-describedby="basic-addon1">
+                    <div class="input-group-append">
+                        <a routerLink="/cadastro_consulta" class="btn btn-primary active" role="button" aria-pressed="true">
+                          <i class="fas fa-plus-circle"></i>Marcar consulta
+                        </a>
+                    </div>
+                  </div>
+            </div>
+       </div>
+    <div class="table-responsive">
+      <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Médico(a)</th>
+              <th scope="col">Profissional</th>
+              <th scope="col">Paciente</th>
+              <th scope="col">Data Hora</th>
+              <th scope="col">Realizada</th>
+              <th scope="col">Cancelada</th>
+              <th scope="col">Opções</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of consultas | filter : 'nomePaciente' : procurarPorNome | paginate: { itemsPerPage: 7, currentPage: p,  totalItems: this.numberOfElements }; let i = index;">
+              <td>{{c.profissional.nome}}</td>
+              <td *ngIf="c.profissional.profissional == 1">Ortopedista</td>
+              <td *ngIf="c.profissional.profissional == 2">Cardiologista</td>
+              <td *ngIf="c.profissional.profissional == 3">Dermatologista</td>
+              <td *ngIf="c.profissional.profissional == 4">Oncologista</td>
+              <td *ngIf="c.profissional.profissional == 5">Cirurgia Plástica</td>
+              <td *ngIf="c.profissional.profissional == 6">Hematologista</td>
+              <td>{{c.paciente.nome}}</td>
+              <td>{{c.dataHora | date:'dd/MM/yyyy HH:mm'}}</td>
+              <td *ngIf="c.realizada"><i style="color: green;" class="fas fa-check"  title="Sim"></i></td>
+              <td *ngIf="!c.realizada"><i style="color: red;" class="fas fa-times" title="Não"></i></td>
+              <td *ngIf="!c.cancelada"><i style="color: green;" class="fas fa-check"  title="Válida"></i></td>
+              <td *ngIf="c.cancelada"><i style="color: red;" class="fas fa-times" title="Cancelada"></i></td>
+              <td>
+                <a style="cursor: pointer;" [ngClass]="{disabled: (c.cancelada || c.realizada)}" (click)="cancelaConsulta(c.idConsulta)" class="padding_menu"><i style="color: red;" class="fas fa-ban" title="Cancelar"></i></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+        <table class="table table-borderles">
+              <tbody>
+                    <tr>
+                        <td colspan="4">
+                                  <pagination-controls (pageChange)="p = $event" directionLinks="true"
+                                  autoHide="true" responsive="true"previousLabel="Anterior"
+                                  nextLabel="Próximo" screenReaderPaginationLabel="Pagination"
+                                  screenReaderPageLabel="page"></pagination-controls>
+                        </td>
+                        <td colspan="4" style="text-align: right;">Total de consultas: {{this.qtdConsulta}}</td> 
+                       </tr>
+              </tbody>
+          </table>
+      </div>
+</div>
+

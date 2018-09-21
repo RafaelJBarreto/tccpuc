@@ -1,0 +1,85 @@
+<div class="margin_altura container-fluid">
+    <div class="row justify-content-md-center">
+      <div class="col-md-auto">
+        <h5 class="center">{{titulo}}</h5>
+      </div>
+    </div>
+   
+  <div class="painel">
+      <ngb-alert style="text-align: center;" *ngIf="!avisoMensagem" (close)="avisoMensagem=true">{{mensagem}}</ngb-alert>
+        <form class="needs-validation" [formGroup]="profissionalForm" (ngSubmit)="salvar()">
+                <div class="form-row">
+                  <div class="col-md-4 mb-3">
+                    <label for="nome">Nome</label>
+                    <input type="text" formControlName="nome" class="form-control" id="nome" placeholder="Nome" [ngClass]="{ 'is-invalid': enviando && f.nome.errors }">
+                    <div *ngIf="enviando && f.nome.errors" class="invalid-feedback">
+                            <div *ngIf="f.nome.errors.required">O nome é obrigatório</div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 mb-3">
+                    <label for="email">Email</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="email">@</span>
+                      </div>
+                      <input type="email" formControlName="email" class="form-control" id="email" placeholder="Email" aria-describedby="inputGroupPrepend" [ngClass]="{ 'is-invalid': enviando && f.email.errors }">
+                      <div *ngIf="enviando && f.email.errors" class="invalid-feedback">
+                            <div *ngIf="f.email.errors.required">O email é obrigatório</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 mb-3">
+                        <label for="profissional">Profissional</label>
+                        <select class="form-control" formControlName="profissional" [ngClass]="{ 'is-invalid': enviando && f.profissional.errors }">
+                                <option value="">Selecione</option>
+                                <option value="0">Recepcionista</option>
+                                <option value="1">Ortopedista</option>
+                                <option value="2">Cardiologista</option>
+                                <option value="3">Dermatologista</option>
+                                <option value="4">Oncologista</option>
+                                <option value="5">Cirurgia Plástica</option>
+                                <option value="6">Hematologista</option>
+                        </select>
+                        <div *ngIf="enviando && f.profissional.errors" class="invalid-feedback">
+                                <div *ngIf="f.profissional.errors.required">O profissional é obrigatório</div>
+                          </div>
+                      </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-4 mb-3">
+                            <label for="crm_rms">Crm/Rms</label>
+                            <input type="text" formControlName="crm_rms" class="form-control" id="crm_rms" placeholder="Crm ou Registro no ministério da saúde">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                            <label for="celular">Celular</label>
+                            <input type="text" formControlName="celular" class="form-control" id="celular" placeholder="Celular">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                            <label for="telefone">Telefone</label>
+                            <input type="text" formControlName="telefone" class="form-control" id="telefone" placeholder="Telefone">
+                    </div>
+                </div>
+                <div class="form-row">
+                      <div class="col-md-9 mb-3">
+                        <label for="endereco">Endereço</label>
+                        <input type="text" formControlName="endereco" class="form-control" id="endereco" placeholder="Endereço" >
+                      </div>
+                      <div class="col-md-3 mb-3">
+                            <label for="senha">Senha</label>
+                            <input type="password" formControlName="senha" class="form-control" id="senha" placeholder="Senha"  [ngClass]="{ 'is-invalid': enviando && f.senha.errors }">
+
+                            <div *ngIf="enviando && f.senha.errors" class="invalid-feedback">
+                                    <div *ngIf="f.senha.errors.required">A senha é obrigatória</div>
+                                    <div *ngIf="f.senha.errors.minlength">A senha tem que ter no mínimo 3 caracteres</div>
+                            </div>
+                    </div>
+                </div>
+                <div class="btn-group" role="group" aria-label="Third group">
+                        <button type="button" class="btn btn-primary" type="submit"><i class="fas fa-save"></i>Gravar</button>
+                </div>
+                <div class="btn-group" role="group" aria-label="Third group">
+                    <button routerLink="/profissionais" type="button" class="btn btn-danger"><i class="fas fa-ban"></i>Cancelar</button>
+                </div>
+              </form>
+           </div> 
+</div>

@@ -1,0 +1,73 @@
+<div class="margin_altura container-fluid">
+    <div class="row justify-content-md-center">
+      <div class="col-md-auto">
+        <h5 class="center">{{titulo}}</h5>
+      </div>
+    </div>
+  <div class="painel">
+      <ngb-alert style="text-align: center;" *ngIf="!avisoMensagem" (close)="avisoMensagem=true">{{mensagem}}</ngb-alert>
+          <div class="form-row">
+              <div class="col-md-12 mb-3">
+                  <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                      </div>
+                      <input type="text" [(ngModel)]="procurarPorNome" class="form-control" placeholder="Digite o nome do Paciente..." aria-label="nome" aria-describedby="basic-addon1">
+                      <div class="input-group-append">
+                          <a routerLink="/cadastro_paciente" class="btn btn-primary active" role="button" aria-pressed="true">
+                            <i class="fas fa-plus-circle"></i>Adicionar paciente
+                          </a>
+                      </div>
+                    </div>
+              </div>
+         </div>
+      <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Cartão SUS</th>
+                <th scope="col">Sexo</th>
+                <th scope="col">Nascimento</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Telefone</th>
+                <th scope="col">Celular</th>
+                <th scope="col">Endereço</th>
+                <th scope="col">Opções</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of pacientes | filter : 'nome' : procurarPorNome | paginate: { itemsPerPage: 7, currentPage: p,  totalItems: this.numberOfElements }; let i = index;">
+                <td>{{p.nome}}</td>
+                <td>{{p.cartaoSus}}</td>
+                <td *ngIf="p.sexo == 1">Feminino</td>
+                <td *ngIf="p.sexo == 0">Masculino</td>
+                <td>{{p.dataNascimento | date:'dd/MM/yyyy'}}</td>
+                <td>{{p.email}}</td>
+                <td>{{p.telefone}}</td>
+                <td>{{p.celular}}</td>
+                <td>{{p.endereco}}</td>
+                <td>
+                  <a style="cursor: pointer;" (click)="deletePaciente(p.idPaciente, i)" class="padding_menu"><i class="fas fa-trash-alt" title="Remover"></i></a>
+                  <a style="cursor: pointer;" (click)="editar(p.idPaciente);" class="padding_menu" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+          <table class="table table-borderles">
+                <tbody>
+                      <tr>
+                          <td colspan="4">
+                                    <pagination-controls (pageChange)="p = $event" directionLinks="true"
+                                    autoHide="true" responsive="true"previousLabel="Anterior"
+                                    nextLabel="Próximo" screenReaderPaginationLabel="Pagination"
+                                    screenReaderPageLabel="page"></pagination-controls>
+                          </td>
+                          <td colspan="4" style="text-align: right;">Total de pacientes: {{this.qtdPaciente}}</td> 
+                         </tr>
+                </tbody>
+            </table>
+        </div>
+</div>
+

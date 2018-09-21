@@ -1,0 +1,376 @@
+<div class="margin_altura container-fluid">
+    <div class="row justify-content-md-center">
+      <div class="col-md-auto">
+        <h5 class="center">{{titulo}}</h5>
+      </div>
+    </div>
+  <div class="painel">
+      <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#ca" role="tab" aria-controls="home" aria-selected="true"><i class="fas fa-calendar-times"></i> Agendadas</a>
+          </li>
+          <li class="nav-item" (click)="getConsultasMedicasPorProfissional()">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#cr" role="tab" aria-controls="profile" aria-selected="false"><i class="fas fa-calendar-check"></i> Realizadas</a>
+          </li>
+          <li class="nav-item" (click)="getPedidosPorProfissional()">
+              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#ep" role="tab" aria-controls="profile" aria-selected="false"> <i class="fas fa-file-prescription"></i> Exames pedidos</a>
+          </li>
+          <li class="nav-item" (click)="getResultadosExames()">
+              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#re" role="tab" aria-controls="profile" aria-selected="false"><i class="fas fa-file-medical-alt"></i> Resultados de exames</a>
+          </li>
+          <li class="nav-item" (click)="getPacientesPorProfissional()">
+              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#pa" role="tab" aria-controls="profile" aria-selected="false"><i class="fas fa-users"></i> Meus pacientes</a>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="ca" role="tabpanel" aria-labelledby="home-tab">
+
+              <div class="row justify-content-md-center">
+                  <div class="col-md-auto" style="padding-top: 20px;">
+                      <div class="alert alert-success" role="alert" *ngIf="qtdConsulta == 0">
+                          Sua agenda de consultas está livre...
+                      </div>
+                  </div>
+                </div>
+              
+              <div class="painel" style="margin-top: 10px;" *ngIf="qtdConsulta > 0">
+                  <ngb-alert style="text-align: center;" *ngIf="!avisoMensagem" (close)="avisoMensagem=true">{{mensagem}}</ngb-alert>
+                      <div class="form-row">
+                          <div class="col-md-12 mb-3">
+                              <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                                  </div>
+                                  <input type="text" [(ngModel)]="procurarPorNome" class="form-control" placeholder="Digite o nome do paciente..." aria-label="nome" aria-describedby="basic-addon1">
+                                </div>
+                          </div>
+                     </div>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th scope="col">Paciente</th>
+                            <th scope="col">Data Hora</th>
+                            <th scope="col">Realizada</th>
+                            <th scope="col">Opções</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let c of consultas | filter : 'nomePaciente' : procurarPorNome | paginate: { itemsPerPage: 7, currentPage: p,  totalItems: this.numberOfElements }; let i = index;">
+                            <td>{{c.paciente.nome}}</td>
+                            <td>{{c.dataHora | date:'dd/MM/yyyy HH:mm'}}</td>
+                            <td *ngIf="c.realizada"><i style="color: green;" class="fas fa-check"  title="Sim"></i></td>
+                            <td *ngIf="!c.realizada"><i style="color: red;" class="fas fa-times" title="Não"></i></td>
+                            <td>
+                              <a style="cursor: pointer;" [ngClass]="{disabled: (c.realizada)}" (click)="consultar(c.idConsulta)" class="padding_menu"><i class="fas fa-briefcase-medical" title="Consultar"></i></a>
+                              <a style="cursor: pointer;" [ngClass]="{disabled: (c.pedidoRealizado)}" (click)="pedirexame(c.idConsulta)" class="padding_menu"><i class="fas fa-file-medical-alt" title="Pedir exame"></i></a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                      <table class="table table-borderles">
+                            <tbody>
+                                  <tr>
+                                      <td colspan="4">
+                                                <pagination-controls (pageChange)="p = $event" directionLinks="true"
+                                                autoHide="true" responsive="true"previousLabel="Anterior"
+                                                nextLabel="Próximo" screenReaderPaginationLabel="Pagination"
+                                                screenReaderPageLabel="page"></pagination-controls>
+                                      </td>
+                                      <td colspan="4" style="text-align: right;">Total de consultas agendadas: {{this.qtdConsulta}}</td> 
+                                     </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+          </div>
+          <div class="tab-pane fade" id="cr" role="tabpanel" aria-labelledby="profile-tab">
+              <div class="painel" style="margin-top: 10px;">
+                  <ngb-alert style="text-align: center;" *ngIf="!avisoMensagem" (close)="avisoMensagem=true">{{mensagem}}</ngb-alert>
+                  <div class="form-row">
+                      <div class="col-md-12 mb-3">
+                          <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                              </div>
+                              <input type="text" [(ngModel)]="procurarConsultaPorNome" class="form-control" placeholder="Digite o nome do paciente..." aria-label="nome" aria-describedby="basic-addon1">
+                            </div>
+                      </div>
+                 </div>
+                  <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">Opções</th>
+                          <th scope="col">Paciente</th>
+                          <th scope="col">Data Hora</th>
+                        </tr>
+                      </thead>
+                  </table>
+                  <mat-accordion>
+                      <mat-expansion-panel [disabled]="isDisabled" *ngFor="let cm of consultasMedica | filter : 'nomePaciente' : procurarConsultaPorNome | paginate: { itemsPerPage: 7, currentPage: p,  totalItems: this.numberOfElements }; let i = index;">
+                          <mat-expansion-panel-header class="col-md-12"> 
+                              <span class="mat-content">
+                                  <mat-panel-description class="col-md-2 mat-expansion-panel-header-description">
+                                      <a style="cursor: pointer;" (click)="editar(cm.consulta.idConsulta);" class="padding_menu" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                      <a style="cursor: pointer;" (click)="removerconsulta(cm.consulta.idConsulta);" class="padding_menu" title="Remover consulta"><i class="fas fa-trash-alt"></i></a>
+                                 </mat-panel-description>
+                                 <mat-panel-description class="col-md-6 mat-expansion-panel-header-description">
+                                      <div>{{cm.consulta.paciente.nome}}</div>
+                                  </mat-panel-description>
+                                  <mat-panel-description class="col-md-4 mat-expansion-panel-header-description">
+                                      <div>{{cm.consulta.dataHora | date:'dd/MM/yyyy HH:mm'}}</div>
+                                  </mat-panel-description>  
+                              </span>             
+                          </mat-expansion-panel-header>
+
+                        <div class="table-responsive">
+                            <hr>
+                             <b>Diagnóstico: </b><span>{{cm.diagnosticoConsulta}}</span>
+                            <hr>
+                            <table class="table table-striped">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Paciente</th>
+                                    <th scope="col">Data consulta</th>
+                                    <th scope="col">Medicamento</th>
+                                    <th scope="col">Prescrição</th>
+                                    <th scope="col">Quantidade</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let c of cm.listaMedicamentos">
+                                    <td>{{cm.consulta.paciente.nome}}</td>
+                                    <td>{{cm.consulta.dataHora | date:'dd/MM/yyyy HH:mm'}}</td>
+                                    <td>{{c.medicamento.nomeGenerico}} - {{c.medicamento.nomeComercial}}</td>
+                                    <td>{{c.prescricao}}</td>
+                                    <td>{{c.quantidade}}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                        </div>
+                      </mat-expansion-panel>
+                    </mat-accordion>
+                    <table class="table table-borderles">
+                      <tbody>
+                            <tr>
+                                <td colspan="4">
+                                          <pagination-controls (pageChange)="p = $event" directionLinks="true"
+                                          autoHide="true" responsive="true"previousLabel="Anterior"
+                                          nextLabel="Próximo" screenReaderPaginationLabel="Pagination"
+                                          screenReaderPageLabel="page"></pagination-controls>
+                                </td>
+                                <td colspan="4" style="text-align: right;">Total de consultas realizadas: {{this.qtdConsultaMedica}}</td> 
+                               </tr>
+                      </tbody>
+                  </table>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="ep" role="tabpanel" aria-labelledby="profile-tab">
+              <div class="painel" style="margin-top: 10px;">
+                  <ngb-alert style="text-align: center;" *ngIf="!avisoMensagem" (close)="avisoMensagem=true">{{mensagem}}</ngb-alert>
+                  <div class="form-row">
+                      <div class="col-md-12 mb-3">
+                          <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                              </div>
+                              <input type="text" [(ngModel)]="procurarPedidoPorNome" class="form-control" placeholder="Digite o nome do paciente..." aria-label="nome" aria-describedby="basic-addon1">
+                            </div>
+                      </div>
+                 </div>
+
+                  <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">Opções</th>
+                          <th scope="col">Paciente</th>
+                          <th scope="col">Data Hora</th>
+                        </tr>
+                      </thead>
+                  </table>
+                  <mat-accordion>
+                      <mat-expansion-panel [disabled]="isDisabledExame" *ngFor="let p of pedidos | filter : 'nomePaciente' : procurarPedidoPorNome | paginate: { itemsPerPage: 7, currentPage: p,  totalItems: this.numberOfElements }; let i = index;">
+                          <mat-expansion-panel-header class="col-md-12"> 
+                              <span class="mat-content">
+                                  <mat-panel-description class="col-md-2 mat-expansion-panel-header-description">
+                                      <a style="cursor: pointer;" (click)="editarpedidoexame(p.consulta.idConsulta);" class="padding_menu" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                      <a style="cursor: pointer;" (click)="removerpedidoexame(p.consulta.idConsulta);" class="padding_menu" title="Remover pedido de exame"><i class="fas fa-trash-alt"></i></a>
+                                 </mat-panel-description>
+                                 <mat-panel-description class="col-md-6 mat-expansion-panel-header-description">
+                                      <div>{{p.consulta.paciente.nome}}</div>
+                                  </mat-panel-description>
+                                  <mat-panel-description class="col-md-4 mat-expansion-panel-header-description">
+                                      <div>{{p.consulta.dataHora | date:'dd/MM/yyyy HH:mm'}}</div>
+                                  </mat-panel-description>  
+                              </span>             
+                          </mat-expansion-panel-header>
+
+                        <div class="table-responsive">
+                          
+                            <table class="table table-striped">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Paciente</th>
+                                    <th scope="col">Data consulta</th>
+                                    <th scope="col">Exame</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let e of p.listaExames">
+                                    <td>{{p.consulta.paciente.nome}}</td>
+                                    <td>{{p.consulta.dataHora | date:'dd/MM/yyyy HH:mm'}}</td>
+                                    <td>{{e.exame.exame}}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                        </div>
+                      </mat-expansion-panel>
+                    </mat-accordion>
+                    <table class="table table-borderles">
+                      <tbody>
+                            <tr>
+                                <td colspan="4">
+                                          <pagination-controls (pageChange)="p = $event" directionLinks="true"
+                                          autoHide="true" responsive="true"previousLabel="Anterior"
+                                          nextLabel="Próximo" screenReaderPaginationLabel="Pagination"
+                                          screenReaderPageLabel="page"></pagination-controls>
+                                </td>
+                                <td colspan="4" style="text-align: right;">Total de pedidos de exames: {{this.qtdPedido}}</td> 
+                               </tr>
+                      </tbody>
+                  </table>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="re" role="tabpanel" aria-labelledby="profile-tab">
+              <div class="painel" style="margin-top: 10px;">
+                  <ngb-alert style="text-align: center;" *ngIf="!avisoMensagem" (close)="avisoMensagem=true">{{mensagem}}</ngb-alert>
+                  <div class="form-row">
+                      <div class="col-md-12 mb-3">
+                          <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                              </div>
+                              <input type="text" [(ngModel)]="procurarPedidoPorNome" class="form-control" placeholder="Digite o nome do paciente..." aria-label="nome" aria-describedby="basic-addon1">
+                            </div>
+                      </div>
+                 </div>
+                 <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">Paciente</th>
+                        <th scope="col">Data da coleta</th>
+                      </tr>
+                    </thead>
+                </table>
+                <mat-accordion>
+                    <mat-expansion-panel [disabled]="isDisabledExame" *ngFor="let r of resultados | filter : 'nomePaciente' : procurarPedidoPorNome | paginate: { itemsPerPage: 7, currentPage: p,  totalItems: this.numberOfElements }; let i = index;">
+                        <mat-expansion-panel-header class="col-md-12"> 
+                            <span class="mat-content">
+                                <mat-panel-description class="col-md-4 mat-expansion-panel-header-description">
+                                    <div>{{r.consulta.paciente.nome}}</div>
+                                </mat-panel-description> 
+                                <mat-panel-description class="col-md-4 mat-expansion-panel-header-description">
+                                    <div>{{r.dataColeta | date:'dd/MM/yyyy HH:mm'}}</div>
+                                </mat-panel-description> 
+                            </span>             
+                        </mat-expansion-panel-header>
+          
+                      <div class="table-responsive">
+                        
+                          <table class="table table-striped">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Exame</th>
+                                  <th scope="col">Resultado</th>
+                                  <th scope="col">Unidade</th>
+                                  <th scope="col">Valor referência</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let e of r.listaResultado">
+                                  <td>{{e.exame.exame}}</td>
+                                  <td>{{e.resultado}}</td>
+                                  <td *ngIf="e.unidade == 0">mg/dL</td>
+                                  <td *ngIf="e.unidade == 1">g/dL</td>
+                                  <td *ngIf="e.unidade == 2">mEq/L</td>
+                                  <td *ngIf="e.unidade == 3">mL/min</td>
+                                  <td *ngIf="e.unidade == 4">mOsm/kg</td>
+                                  <td *ngIf="e.unidade == 5">pg/mL</td>
+                                  <td *ngIf="e.unidade == 6">ng/dL</td>
+                                  <td>{{e.valorReferencia}}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                      </div>
+                    </mat-expansion-panel>
+                  </mat-accordion>
+                  <table class="table table-borderles">
+                    <tbody>
+                          <tr>
+                              <td colspan="4">
+                                        <pagination-controls (pageChange)="p = $event" directionLinks="true"
+                                        autoHide="true" responsive="true"previousLabel="Anterior"
+                                        nextLabel="Próximo" screenReaderPaginationLabel="Pagination"
+                                        screenReaderPageLabel="page"></pagination-controls>
+                              </td>
+                              <td colspan="4" style="text-align: right;">Total de resultados de exame: {{this.qtdResultadoExame}}</td> 
+                             </tr>
+                    </tbody>
+                </table>
+                  
+            </div>
+          </div>
+          <div class="tab-pane fade" id="pa" role="tabpanel" aria-labelledby="profile-tab">
+              <div class="painel" style="margin-top: 10px;">
+                  <div class="form-row">
+                      <div class="col-md-12 mb-3">
+                          <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                              </div>
+                              <input type="text" [(ngModel)]="procurarPorNome" class="form-control" placeholder="Digite o nome do paciente..." aria-label="nome" aria-describedby="basic-addon1">
+                            </div>
+                      </div>
+                 </div>
+                  <div class="table-responsive">
+                      <table class="table table-striped">
+                          <thead>
+                            <tr>
+                              <th scope="col">Nome</th>
+                              <th scope="col">Sexo</th>
+                              <th scope="col">Nascimento</th>
+                              <th scope="col">Ver Prontuário</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let p of pacientes | filter : 'nome' : procurarPorNome | paginate: { itemsPerPage: 7, currentPage: p,  totalItems: this.numberOfElements }; let i = index;">
+                              <td>{{p.nome}}</td>
+                              <td *ngIf="p.sexo == 1">Feminino</td>
+                              <td *ngIf="p.sexo == 0">Masculino</td>
+                              <td>{{p.dataNascimento | date:'dd/MM/yyyy'}}</td>
+                              <td>
+                                <a style="cursor: pointer;" (click)="prontuario(p.idPaciente);" class="padding_menu" title="Prontuário do(a) {{p.nome}}"><i class="far fa-eye"></i></a>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                        <table class="table table-borderles">
+                              <tbody>
+                                    <tr>
+                                        <td colspan="4">
+                                                  <pagination-controls (pageChange)="p = $event" directionLinks="true"
+                                                  autoHide="true" responsive="true"previousLabel="Anterior"
+                                                  nextLabel="Próximo" screenReaderPaginationLabel="Pagination"
+                                                  screenReaderPageLabel="page"></pagination-controls>
+                                        </td>
+                                        <td colspan="4" style="text-align: right;">Total de pacientes: {{this.qtdPaciente}}</td> 
+                                       </tr>
+                              </tbody>
+                          </table>
+            </div>
+          </div>
+        </div>
+  </div>
+</div>

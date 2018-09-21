@@ -1,0 +1,64 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<head>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <form class="form-horizontal" role="form" [formGroup]="loginForm">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6" style=" text-align: center;">
+                    <a class="navbar-brand"><span>Cli</span>Medic</a>
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <div class="form-group has-danger">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="basic-addon1"><i class="fas fa-envelope"></i></span>
+                            </div>
+                            <input formControlName="email" type="text" class="form-control" placeholder="E-mail" aria-label="email" aria-describedby="basic-addon1" [ngClass]="{ 'is-invalid': enviando && f.email.errors }">
+                            <div *ngIf="enviando && f.email.errors" class="invalid-feedback">
+                                    <div *ngIf="f.email.errors.required">O email é obrigatório</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="basic-addon1"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input type="password" formControlName="senha" class="form-control" placeholder="Senha" aria-label="senha" aria-describedby="basic-addon1" [ngClass]="{ 'is-invalid': enviando && f.senha.errors }">
+                            <div *ngIf="enviando && f.senha.errors" class="invalid-feedback">
+                                    <div *ngIf="f.senha.errors.required">A senha é obrigatória</div>
+                                    <div *ngIf="f.senha.errors.minlength">A senha tem que ter no mínimo 3 caracteres</div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 1rem">
+                <div class="col-md-3"></div>
+                <div class="col-md-3">
+                    <button (click)="LogOn()" type="submit" class="btn btn-success"><i class="fas fa-sign-in-alt"></i>Acessar</button>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 10px;">
+                <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                     <ngb-alert style="text-align: center;" *ngIf="!erroLogin" (close)="erroLogin=true">E-mail ou senha inválidos.</ngb-alert>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>

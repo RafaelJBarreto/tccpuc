@@ -1,0 +1,97 @@
+<div class="margin_altura container-fluid">
+  <div class="row justify-content-md-center">
+    <div class="col-md-auto">
+      <h5 class="center">{{titulo}}</h5>
+    </div>
+  </div>
+
+  <div class="painel" style="margin-top: 10px;">
+      <ngb-alert style="text-align: center;" *ngIf="!avisoMensagem" (close)="avisoMensagem=true">{{mensagem}}</ngb-alert>
+      <div class="form-row">
+          <div class="col-md-12 mb-3">
+              <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                  </div>
+                  <input type="text" [(ngModel)]="procurarPedidoPorNome" class="form-control" placeholder="Digite o nome do paciente..." aria-label="nome" aria-describedby="basic-addon1">
+                </div>
+          </div>
+     </div>
+
+      <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Opção</th>
+              <th scope="col">Profissional</th>
+              <th scope="col">Paciente</th>
+              <th scope="col">Data Hora</th>
+            </tr>
+          </thead>
+      </table>
+      <mat-accordion>
+          <mat-expansion-panel [disabled]="isDisabledExame" *ngFor="let p of pedidos | filter : 'nomePaciente' : procurarPedidoPorNome | paginate: { itemsPerPage: 7, currentPage: p,  totalItems: this.numberOfElements }; let i = index;">
+              <mat-expansion-panel-header class="col-md-12"> 
+                  <span class="mat-content">
+                      <mat-panel-description class="col-md-1 mat-expansion-panel-header-description">
+                          <a style="cursor: pointer;" (click)="lancarResultado(p.consulta.idConsulta);" class="padding_menu" title="Lançar resultado"><i class="fas fa-file-prescription"></i></a>
+                     </mat-panel-description>
+                      <mat-panel-description class="col-md-4 mat-expansion-panel-header-description">
+                          <div>{{p.consulta.profissional.nome}}</div>
+                      </mat-panel-description> 
+                      <mat-panel-description class="col-md-4 mat-expansion-panel-header-description">
+                          <div>{{p.consulta.paciente.nome}}</div>
+                      </mat-panel-description>
+                      <mat-panel-description class="col-md-4 mat-expansion-panel-header-description">
+                          <div>{{p.consulta.dataHora | date:'dd/MM/yyyy HH:mm'}}</div>
+                      </mat-panel-description>  
+                  </span>             
+              </mat-expansion-panel-header>
+
+            <div class="table-responsive">
+              
+                <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">Profissional</th>
+                        <th scope="col">Crm - Rms</th>
+                        <th scope="col">Especialidade</th>
+                        <th scope="col">Paciente</th>
+                        <th scope="col">Data consulta</th>
+                        <th scope="col">Exame</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let e of p.listaExames">
+                        <td>{{p.consulta.profissional.nome}}</td>
+                        <td>{{p.consulta.profissional.crm_rms}}</td>
+                        <td *ngIf="p.consulta.profissional.profissional == 1">Ortopedista</td>
+                        <td *ngIf="p.consulta.profissional.profissional == 2">Cardiologista</td>
+                        <td *ngIf="p.consulta.profissional.profissional == 3">Dermatologista</td>
+                        <td *ngIf="p.consulta.profissional.profissional == 4">Oncologista</td>
+                        <td *ngIf="p.consulta.profissional.profissional == 5">Cirurgia Plástica</td>
+                        <td *ngIf="p.consulta.profissional.profissional == 6">Hematologista</td>
+                        <td>{{p.consulta.paciente.nome}}</td>
+                        <td>{{p.consulta.dataHora | date:'dd/MM/yyyy HH:mm'}}</td>
+                        <td>{{e.exame.exame}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <table class="table table-borderles">
+          <tbody>
+                <tr>
+                    <td colspan="4">
+                              <pagination-controls (pageChange)="p = $event" directionLinks="true"
+                              autoHide="true" responsive="true"previousLabel="Anterior"
+                              nextLabel="Próximo" screenReaderPaginationLabel="Pagination"
+                              screenReaderPageLabel="page"></pagination-controls>
+                    </td>
+                    <td colspan="4" style="text-align: right;">Total de pedidos de exame: {{this.qtdPedido}}</td> 
+                   </tr>
+          </tbody>
+      </table>
+</div>
+</div>
+

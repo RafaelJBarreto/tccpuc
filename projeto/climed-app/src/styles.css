@@ -1,0 +1,237 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~font-awesome/css/font-awesome.css";
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+
+@import url('https://fonts.googleapis.com/css?family=Gothic+A1|Kaushan+Script|Libre+Baskerville|Lobster');
+@font-face {
+	font-family: "SF Display";
+	font-weight: 900;
+	src: url('./fonts/System_San_Francisco_Display_Bold.ttf');
+  }
+
+.body{
+	font-family: 'Gothic A1', sans-serif;
+	font-size:16px;
+	}
+	p{
+	color:#6c6c6f;
+	font-size:1em;
+	}
+	h1,h2,h3,h4,h5,h6{
+		color:#323233;
+		font-family: "SF Display";
+	}
+.navbar-brand  span{
+    color: #d8d316;
+	font-size:25px;font-weight:700;letter-spacing:0.1em;
+    font-family: 'Kaushan Script','Helvetica Neue',Helvetica,Arial,cursive;
+}
+.navbar-brand {
+	color: #fff;
+	font-size:25px;
+    font-family: 'Kaushan Script','Helvetica Neue',Helvetica,Arial,cursive;
+	font-weight:700;
+	letter-spacing:0.1em;
+}
+
+.navbar-nav .nav-item .nav-link{
+	padding: 1.1em 1em!important;
+	font-size: 100%;
+    font-weight: 500;
+    color: #fff;
+}
+.navbar-nav .nav-item .nav-link:hover{color:#d8d316;}
+.navbar-expand-md .navbar-nav .dropdown-menu{
+	border-top:3px solid #d8d316;
+}
+.dropdown-item:hover{background-color:#d8d316;color:#fff;}
+nav{-webkit-transition: padding-top .3s,padding-bottom .3s;
+    -moz-transition: padding-top .3s,padding-bottom .3s;
+    transition: padding-top .3s,padding-bottom .3s;
+    border: none;
+	}
+	
+ .shrink {
+    padding-top: 0;
+    padding-bottom: 0;
+    background-color: #212529;
+}
+
+.painel {
+	padding: 10px;
+    background: #FFF;
+    border: 1px solid #DDD;
+    border-radius: 10px 10px 10px 10px;
+    box-shadow: 1px 1px 1px #DDD;
+    display: block;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.padding_form_row{
+	padding-top: 15px;
+}
+.padding_menu{
+    padding-left: 10px;
+}
+
+.margin_altura{
+	padding-top: 100px;
+}
+
+.margin_abaixo{
+	margin-bottom: 15px;
+    float: right;
+}
+
+.margin_button_cancel{
+	margin-left: 10px;
+}
+.center{
+	text-align: center;
+}
+
+.banner{
+    padding-top: 180px;
+	background-image:url('./imagens/imagem_inicio.jpg');
+	text-align: center;
+    color: #fff;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+a {
+    color: #0a498e;
+    text-decoration: none;
+    background-color: transparent;
+    -webkit-text-decoration-skip: objects;
+}
+
+.banner-text{
+	padding:200px 0 150px 0;
+}
+.banner-heading{
+	font-family: 'Lobster', cursive;
+	font-size: 75px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color:#0a498e;
+    text-shadow: #d8d316 -1px -1px;
+}
+.banner-sub-heading{
+	font-family: 'Libre Baskerville', serif;
+	font-size: 30px;
+    font-weight: 300;
+    line-height: 30px;
+    margin-bottom: 50px;
+	color:#0a498e;
+}
+
+.btn-banner{
+	padding:5px 20px;
+	border-radius:10px;
+	font-weight:700;
+	line-height:1.5;
+	text-align:center;
+	color:#fff;
+	text-transform:uppercase;
+}
+.text-intro{
+	width:90%;
+	margin:auto;
+	text-align:center;
+	padding-top:30px;
+}
+
+
+/* mobile view */
+@media (max-width:500px)
+{
+	.navbar-nav{
+		background-color:#0a498e;
+		border-top:3px solid #d8d316;
+		color:#fff;
+		z-index:1;
+		margin-top:5px;
+		}
+	.navbar-nav .nav-item .nav-link{
+	padding: 0.7em 1em!important;
+	font-size: 100%;
+    font-weight: 500;
+    }
+	.banner-text{
+	padding:150px 0 150px 0;
+}
+.banner-heading{
+	font-size: 30px;
+    line-height: 30px;
+    margin-bottom: 20px;
+}
+.banner-sub-heading{
+	font-size: 10px;
+    font-weight: 200;
+    line-height: 10px;
+    margin-bottom: 40px;
+}
+
+}
+
+@media (max-width:768px){
+	.banner-text{
+	padding:150px 0 150px 0;
+}
+	.banner-sub-heading{
+	font-size: 23px;
+    font-weight: 200;
+    line-height: 23px;
+    margin-bottom: 40px;
+}
+}
+
+.disabled {
+	pointer-events: none;
+	opacity: 0.4;   
+}
+
+.esconde{
+	display: none !important;
+}
+
+.mostrar{
+	display: flex !important;
+}
+
+.border_{
+	border: 1px solid #cccbcb;
+	padding: 10px;
+	border-radius: 10px 10px 10px 10px;
+	margin-top: 10px;
+}
+
+.mat-expansion-panel-header-title {
+    flex: 0 0 auto;
+    margin-right: 16px;
+}
+
+.mat-expansion-panel-header-description {
+    flex: 1 1 auto; 
+    min-width: 0;
+    margin-right: 16px;
+}
+
+.mat-expansion-panel-header-description > div {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.style_table_prontuario{
+	text-align: center;
+    background: #0a498e66;
+    color: #00000082;
+}
+

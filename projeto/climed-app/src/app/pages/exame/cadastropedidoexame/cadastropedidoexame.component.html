@@ -1,0 +1,53 @@
+<div class="margin_altura container-fluid">
+    <div class="row justify-content-md-center">
+        <div class="col-md-auto">
+        <h5 class="center">{{titulo}}</h5>
+        </div>
+    </div>  
+    <ngb-alert style="text-align: center;" *ngIf="!avisoMensagem" (close)="avisoMensagem=true">{{mensagem}}</ngb-alert>
+    <div class="painel">
+      <div class="form-group row">
+        <label for="staticEmail" class="col-sm-1 col-form-label font-weight-bold">Paciente:</label>
+        <div class="col-sm-9">
+          <input type="text" readonly class="form-control-plaintext " id="paciente" value="{{nomePaciente}}">
+        </div>
+        <div class="col-sm-2">
+            <div class="btn-group" role="group" aria-label="Third group">
+                <button type="button" class="btn btn-primary btn-sm" type="submit" (click)="salvar()"><i class="fas fa-file-medical"></i>Solicitar</button>
+            </div>
+            <div class="btn-group" role="group" aria-label="Third group">
+                <button routerLink="/consultasmedicas" type="button" class="btn btn-danger btn-sm"><i class="fas fa-ban"></i>Cancelar</button>
+            </div>
+        </div>
+      </div>
+      <hr>
+
+      <form [formGroup]="pedidoExameForm" novalidate>
+            <div class="row justify-content-center" role="group" aria-label="Third group">
+                    <button type="button" (click)="addExame()" class="btn btn-primary btn-sm" type="submit"><i class="fas fa-notes-medical"></i>Add exame</button>
+            </div>
+            <div formArrayName="items">
+                <div class="ui raised segments"  *ngFor="let line of pedidoExameForm.controls['items'].controls; index as i" [formGroupName]="i">
+                    <div class="form-row border_">
+                    <div class="col-md-10 mb-3">
+                        <label for="nome">Exame</label>
+                        <select class="form-control" formControlName="exame" [ngClass]="{ 'is-invalid': this.items.controls[i].value.exame == '' }">
+                                <option value="">Selecione</option>
+                                <option [ngValue]="e.idExame" *ngFor="let e of exames">{{e.exame}}</option>
+                        </select>
+                        <div *ngIf="this.items.controls[i].value.exame == ''" class="invalid-feedback">
+                              <div>O exame é obrigatório</div>
+                      </div>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                          <div class="btn-group d-inline mx-auto center" role="group">
+                              <button style="margin-top: 30px;"  [ngClass]="{disabled: (this.items.controls[i].value.prescricao == ''),  disabled: (this.items.controls[i].disabled)}"  type="button" class="btn btn-primary btn-sm" (click)="add(i)" ><i *ngIf="!isEdicao">Add</i><i *ngIf="isEdicao">Atualizar</i></button>
+                              <button style="margin-top: 30px;" type="button" class="btn btn-danger btn-sm" (click)="excluirExame(i)"><i>Excluir</i></button>
+                          </div>
+                    </div>
+                    </div>
+                  </div>
+            </div> 
+    </form>
+    </div>
+    </div>    

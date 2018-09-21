@@ -1,0 +1,94 @@
+<div class="margin_altura container-fluid">
+  <div class="row justify-content-md-center">
+    <div class="col-md-auto">
+      <h5 class="center">{{titulo}}</h5>
+    </div>
+  </div>
+
+  <div class="painel" style="margin-top: 10px;">
+      <ngb-alert style="text-align: center;" *ngIf="!avisoMensagem" (close)="avisoMensagem=true">{{mensagem}}</ngb-alert>
+      <div class="form-row">
+          <div class="col-md-12 mb-3">
+              <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                  </div>
+                  <input type="text" [(ngModel)]="procurarPedidoPorNome" class="form-control" placeholder="Digite o nome do paciente..." aria-label="nome" aria-describedby="basic-addon1">
+                </div>
+          </div>
+     </div>
+
+      <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Opções</th>
+              <th scope="col">Profissional</th>
+              <th scope="col">Paciente</th>
+              <th scope="col">Data da coleta</th>
+            </tr>
+          </thead>
+      </table>
+      <mat-accordion>
+          <mat-expansion-panel [disabled]="isDisabledExame" *ngFor="let r of resultados | filter : 'nomePaciente' : procurarPedidoPorNome | paginate: { itemsPerPage: 7, currentPage: p,  totalItems: this.numberOfElements }; let i = index;">
+              <mat-expansion-panel-header class="col-md-12"> 
+                  <span class="mat-content">
+                      <mat-panel-description class="col-md-1 mat-expansion-panel-header-description">
+                          <a style="cursor: pointer;" (click)="editarResultado(r.consulta.idConsulta);" class="padding_menu" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                     </mat-panel-description>
+                      <mat-panel-description class="col-md-4 mat-expansion-panel-header-description">
+                          <div>{{r.consulta.profissional.nome}}</div>
+                      </mat-panel-description> 
+                      <mat-panel-description class="col-md-4 mat-expansion-panel-header-description">
+                          <div>{{r.consulta.paciente.nome}}</div>
+                      </mat-panel-description> 
+                      <mat-panel-description class="col-md-4 mat-expansion-panel-header-description">
+                          <div>{{r.dataColeta | date:'dd/MM/yyyy HH:mm'}}</div>
+                      </mat-panel-description> 
+                  </span>             
+              </mat-expansion-panel-header>
+
+            <div class="table-responsive">
+              
+                <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">Exame</th>
+                        <th scope="col">Resultado</th>
+                        <th scope="col">Unidade</th>
+                        <th scope="col">Valor referência</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let e of r.listaResultado">
+                        <td>{{e.exame.exame}}</td>
+                        <td>{{e.resultado}}</td>
+                        <td *ngIf="e.unidade == 0">mg/dL</td>
+                        <td *ngIf="e.unidade == 1">g/dL</td>
+                        <td *ngIf="e.unidade == 2">mEq/L</td>
+                        <td *ngIf="e.unidade == 3">mL/min</td>
+                        <td *ngIf="e.unidade == 4">mOsm/kg</td>
+                        <td *ngIf="e.unidade == 5">pg/mL</td>
+                        <td *ngIf="e.unidade == 6">ng/dL</td>
+                        <td>{{e.valorReferencia}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <table class="table table-borderles">
+          <tbody>
+                <tr>
+                    <td colspan="4">
+                              <pagination-controls (pageChange)="p = $event" directionLinks="true"
+                              autoHide="true" responsive="true"previousLabel="Anterior"
+                              nextLabel="Próximo" screenReaderPaginationLabel="Pagination"
+                              screenReaderPageLabel="page"></pagination-controls>
+                    </td>
+                    <td colspan="4" style="text-align: right;">Total de resultados de exame: {{this.qtdResultado}}</td> 
+                   </tr>
+          </tbody>
+      </table>
+</div>
+</div>
+

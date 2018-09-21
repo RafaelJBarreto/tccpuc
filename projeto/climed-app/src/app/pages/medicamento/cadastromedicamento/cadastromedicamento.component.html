@@ -1,0 +1,58 @@
+<div class="margin_altura container-fluid">
+    <div class="row justify-content-md-center">
+      <div class="col-md-auto">
+        <h5 class="center">{{titulo}}</h5>
+      </div>
+    </div>
+   
+  <div class="painel">
+      <ngb-alert style="text-align: center;" *ngIf="!avisoMensagem" (close)="avisoMensagem=true">{{mensagem}}</ngb-alert>
+        <form class="needs-validation" [formGroup]="medicamentoForm" (ngSubmit)="salvar()">
+                <div class="form-row">
+                  <div class="col-md-5 mb-3">
+                    <label for="nome">Nome Genérico</label>
+                    <input type="text" formControlName="nomeG" class="form-control" id="nomeG" placeholder="Nome Genérico" [ngClass]="{ 'is-invalid': enviando && f.nomeG.errors }">
+                    <div *ngIf="enviando && f.nomeG.errors" class="invalid-feedback">
+                            <div *ngIf="f.nomeG.errors.required">O nome genérico é obrigatório</div>
+                    </div>
+                  </div>
+                  <div class="col-md-5 mb-3">
+                    <label for="email">Nome Comercial</label>
+                    <input type="text" formControlName="nomeC" class="form-control" id="nomeC" placeholder="Nome Comercial" [ngClass]="{ 'is-invalid': enviando && f.nomeC.errors }">
+                    <div *ngIf="enviando && f.nomeC.errors" class="invalid-feedback">
+                            <div *ngIf="f.nomeC.errors.required">O nome comercial é obrigatório</div>
+                    </div>
+                  </div>
+                  <div class="col-md-2 mb-3">
+                        <label for="profissional">Fabricante</label>
+                        <select class="form-control" formControlName="fabricante">
+                                <option value="">Selecione</option>
+                                <option value="0">Johnson & Johnson</option>
+                                <option value="1">EMS Corp</option>
+                                <option value="2">Hypermarcas</option>
+                                <option value="3">Sanofi</option>
+                                <option value="4">Novartis</option>
+                                <option value="5">Aché</option>
+                                <option value="6">Eurofarma</option>
+                                <option value="7">Takeda</option>
+                                <option value="8">Bayer</option>
+                                <option value="9">Pfizer</option>
+                                <option value="10">GSK</option>
+                                <option value="11">Avert</option>
+                                <option value="12">Bionatus</option>
+                                <option value="13">Cimed</option>
+                                <option value="14">Colgate-Palmolive</option>
+                                <option value="15">Farmax</option>
+                                <option value="16">Medley</option>
+                        </select>
+                      </div>
+                </div>
+                <div class="btn-group" role="group" aria-label="Third group">
+                        <button type="button" class="btn btn-primary" type="submit"><i class="fas fa-save"></i>Gravar</button>
+                </div>
+                <div class="btn-group" role="group" aria-label="Third group">
+                    <button routerLink="/medicamentos" type="button" class="btn btn-danger"><i class="fas fa-ban"></i>Cancelar</button>
+                </div>
+              </form>
+           </div> 
+</div>

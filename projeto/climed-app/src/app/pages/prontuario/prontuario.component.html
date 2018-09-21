@@ -1,0 +1,106 @@
+<div class="margin_altura container-fluid">
+  <div class="row justify-content-md-center">
+      <div class="col-md-auto">
+        <h5 class="center">{{titulo}}</h5>
+      </div>
+    </div>
+  <div class="painel">
+      <div class="form-group row">
+          <label for="staticEmail" class="col-sm-1 col-form-label font-weight-bold font-italic">Paciente:</label>
+          <div class="col-sm-3">
+            <input type="text" readonly class="form-control-plaintext " id="paciente" value="{{nomePaciente}}">
+          </div>
+          <label for="staticEmail" class="col-sm-1 col-form-label font-weight-bold font-italic">Nascimento:</label>
+          <div class="col-sm-2">
+            <input type="text" readonly class="form-control-plaintext " id="data" value="{{dataNascimento | date:'dd/MM/yyyy'}}">
+          </div>
+          <label for="staticEmail" class="col-sm-1 col-form-label font-weight-bold font-italic">Sexo:</label>
+          <div class="col-sm-1">
+            <input type="text" readonly class="form-control-plaintext " id="sexo" value="{{sexo}}">
+          </div>
+          <label for="staticEmail" class="col-sm-1 col-form-label font-weight-bold font-italic">N° Sus:</label>
+          <div class="col-sm-2">
+            <input type="text" readonly class="form-control-plaintext " id="sexo" value="{{cartao}}">
+          </div>
+        </div>
+        <hr>
+        <form class="painel" *ngFor="let p of lista; let i = index;">
+            <div class="form-group row" style="background: #0a498e;color: white;">
+                <label for="staticEmail" class="col-sm-1 col-form-label font-weight-bold font-italic">Médico:</label>
+                <div class="col-sm-3">
+                  <input type="text" readonly class="form-control-plaintext " id="medico" style="color: aliceblue !important;" value="{{p.medico}}">
+                </div>
+                <label for="staticEmail" class="col-sm-1 col-form-label font-weight-bold font-italic" >Especialidade:</label>
+                <div class="col-sm-2">
+                  <input type="text" readonly class="form-control-plaintext " id="especialidade" style="color: aliceblue !important;" value="{{p.especialidade}}">
+                </div>
+                <label for="staticEmail" class="col-sm-2 col-form-label font-weight-bold font-italic">Data consulta médica:</label>
+                <div class="col-sm-2">
+                  <input type="text" readonly class="form-control-plaintext " id="data" style="color: aliceblue !important;" value="{{p.dataConsulta | date:'dd/MM/yyyy HH:mm'}}">
+                </div>
+              </div>
+              <hr>
+              <div class="form-group row" *ngIf="p.diagnosticoConsulta != ''">
+                  <label for="staticEmail" class="col-sm-2 col-form-label font-weight-bold font-italic">Diagnóstico consulta:</label>
+                  <div class="col-sm-10">
+                    <textarea type="text" readonly class="form-control-plaintext " id="diagnostico" value="{{p.diagnosticoConsulta}}" rows="3"></textarea>
+                  </div>
+              </div>
+              <hr>
+              <div class="table-responsive">
+                  <table class="table table-striped table-sm">
+                      <thead>
+                          <tr> 
+                            <th class="style_table_prontuario font-weight-bold" colspan="3"><i style="float: left;" class="fas fa-capsules"></i><span>Medicamentos prescritos</span><i style="float: right;" class="fas fa-pills"></i></th>
+                          </tr>
+                        <tr>
+                          <th scope="col" class="font-italic">Medicamento</th>
+                          <th scope="col" class="font-italic">Prescrição</th>
+                          <th scope="col" class="font-italic">Quantidade</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let c of p.listaMedicamentos">
+                          <td>{{c.medicamento.nomeGenerico}} - {{c.medicamento.nomeComercial}}</td>
+                          <td>{{c.prescricao}}</td>
+                          <td>{{c.quantidade}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+              </div>
+              <hr>
+              <div class="table-responsive" *ngFor="let re of p.listaResultado">
+                  <table class="table table-striped table-sm">
+                      <thead>
+                          <tr> 
+                            <th class="style_table_prontuario" colspan="4"><i style="float: left;" class="fas fa-file-contract"></i><span>Resultado exames</span><i style="float: right;" class="fas fa-file-signature"></i></th>
+                          </tr>
+                        <tr>
+                          <th scope="col" class="font-italic" >Exame</th>
+                          <th scope="col" class="font-italic" >Resultado</th>
+                          <th scope="col" class="font-italic" >Unidade</th>
+                          <th scope="col" class="font-italic" >Valor referência</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let e of re.listaResultado">
+                            <td>{{e.exame.exame}}</td>
+                            <td>{{e.resultado}}</td>
+                            <td *ngIf="e.unidade == 0">mg/dL</td>
+                            <td *ngIf="e.unidade == 1">g/dL</td>
+                            <td *ngIf="e.unidade == 2">mEq/L</td>
+                            <td *ngIf="e.unidade == 3">mL/min</td>
+                            <td *ngIf="e.unidade == 4">mOsm/kg</td>
+                            <td *ngIf="e.unidade == 5">pg/mL</td>
+                            <td *ngIf="e.unidade == 6">ng/dL</td>
+                            <td>{{e.valorReferencia}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+              </div>
+        </form> 
+        <hr>  
+  </div>
+</div>
+  
+  
